@@ -1,12 +1,15 @@
 package com.morajavier.practicaunoismd;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.morajavier.practicaunoismd.calculosoperaciones.CalculoOperaciones;
 
@@ -139,23 +142,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CalculoOperaciones resultadOperandos = new CalculoOperaciones(resultadoPantalla.getText().toString());
+                resultadoPantalla.setText("");
                 resultadoPantalla.setText(resultadOperandos.infijoAPostfijo()+"");
+                Toast.makeText(MainActivity.this,"ads", Toast.LENGTH_SHORT).show();
 
-                /*Pattern patron = Pattern.compile("\\+");
-                Matcher matching = patron.matcher(resultadoPantalla.getText().toString());
-                String resTmp = "";
-                if(resultadoPantalla != null && resultadoPantalla.getText() != null){
-                    if(matching.matches()){
-                        String[] resArr = resTmp.split("\\+");
-                        int a = Integer.parseInt(resArr[0]);
-                        int b = Integer.parseInt(resArr[1]);
-                        resultadoPantalla.setText(""+(a+b));
-                    }else{
-                        resultadoPantalla.setText("");
+                AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
+                alerta.setTitle("Operaciones chidas");
+                alerta.setIcon(R.mipmap.cuete);
+                alerta.setMessage("Operaciones");
+                alerta.setPositiveButton("Calculando", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
-                }else{
-                    resultadoPantalla.setText("");
-                }*/
+                });
+                alerta.setNegativeButton("Positivo", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alerta.show();
             }
         });
 

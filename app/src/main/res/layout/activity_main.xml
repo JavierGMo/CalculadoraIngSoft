@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="150dp">
+        android:layout_marginBottom="90dp">
         <EditText
             android:id="@+id/edtResultadoX"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/resultadoHint"
             android:paddingTop="40dp"
-            android:paddingBottom="40dp"
+            android:paddingBottom="10dp"
             android:textSize="40dp">
 
         </EditText>

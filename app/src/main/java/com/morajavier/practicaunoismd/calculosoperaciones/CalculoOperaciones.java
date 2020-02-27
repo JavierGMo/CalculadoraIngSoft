@@ -11,7 +11,10 @@ public class CalculoOperaciones {
     private String aux0;
     private char caracter;
     public  CalculoOperaciones(String data){
+
         this.data = data;
+        pila = new Stack<String>();
+        pilaAux = new Stack<String>();
     }
     public int infijoAPostfijo(){
         int tamanioData = this.data.length();
@@ -30,61 +33,65 @@ public class CalculoOperaciones {
             }else{
                 if(!esOperador(c)){
                     //Checamos si el siguiente de charAt es igual un numero lo concatenamos
-                    if(!esOperador(this.data.charAt(i+1))){
-                        pila.push((c+this.data.charAt(i+1))+"");
+                    if(i+1 < tamanioData ){
+                        if(!esOperador(this.data.charAt(i+1))){
+                            pila.push((c+this.data.charAt(i+1))+"");
+                            ++i;
+                        }else{
+                            pila.push(c+"");
+                        }
                         //esOperador(this.data.charAt(i+1));
                     }else{
                         pila.push(c+"");
                     }
 
                 }else{
-                    if(c == '*'){
-                        while(!pila.isEmpty()){
-                            resOperacion *= Integer.parseInt(pila.peek());
-                            pila.pop();
+                    if(pila.size() > 1){
+                        if(c == '*'){
+                            while(!pila.isEmpty()){
+                                resOperacion = 1;
+                                resOperacion = Integer.parseInt(pila.peek()) * resOperacion;
+                                pila.pop();
+                            }
+                        }else if(c == '/'){
+                            while(!pila.isEmpty()){
+                                resOperacion = 1;
+                                resOperacion = Integer.parseInt(pila.peek())/resOperacion;
+                                pila.pop();
+                            }
+                        }else if(c == '+'){
+                            while(!pila.isEmpty()){
+                                resOperacion += Integer.parseInt(pila.peek());
+                                pila.pop();
+                            }
+                        }else if(c == '-'){
+                            while(!pila.isEmpty()){
+                                resOperacion -= Integer.parseInt(pila.peek());
+                                pila.pop();
+                            }
                         }
-                    }else if(c == '/'){
-                        while(!pila.isEmpty()){
-                            resOperacion /= Integer.parseInt(pila.peek());
-                            pila.pop();
-                        }
-                    }else if(c == '+'){
-                        while(!pila.isEmpty()){
-                            resOperacion += Integer.parseInt(pila.peek());
-                            pila.pop();
-                        }
-                    }else if(c == '-'){
-                        while(!pila.isEmpty()){
-                            resOperacion -= Integer.parseInt(pila.peek());
-                            pila.pop();
-                        }
+                        pila.push(resOperacion+"");
+                        resOperacion = 0;
                     }else{
                         pilaAux.push(c+"");
                     }
-                    /*pilaAux.push(c+"");
-                    while(!pila.isEmpty()){
-                        strAux += pila.peek();
-                        pila.pop();
-                    }*/
-                    pila.push(resOperacion+"");
-                    resOperacion = 0;
-
                 }
             }
 
         }
         resOperacion = 0;
         while(!pilaAux.isEmpty()){
-
             if(!esParentesisIzq(pilaAux.peek().charAt(0))){
                 if(pilaAux.peek().charAt(0) == '*'){
+                    resOperacion = 1;
                     while(!pila.isEmpty()){
                         resOperacion *= Integer.parseInt(pila.peek());
                         pila.pop();
                     }
                 }else if(pilaAux.peek().charAt(0) == '/'){
+                    resOperacion = 1;
                     while(!pila.isEmpty()){
-                        resOperacion /= Integer.parseInt(pila.peek());
+                        resOperacion = Integer.parseInt(pila.peek())/resOperacion;
                         pila.pop();
                     }
                 }else if(pilaAux.peek().charAt(0) == '+'){
@@ -94,10 +101,11 @@ public class CalculoOperaciones {
                     }
                 }else if(pilaAux.peek().charAt(0) == '-'){
                     while(!pila.isEmpty()){
-                        resOperacion -= Integer.parseInt(pila.peek());
+                        resOperacion = Integer.parseInt(pila.peek()) - resOperacion;
                         pila.pop();
                     }
                 }
+                pila.push(resOperacion+"");
                 resOperacion = 0;
             }
             pilaAux.pop();
